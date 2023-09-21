@@ -49,13 +49,16 @@ body p {
     color: #fff;
     background-color: #13629E;
     border-color: #13629E;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
 }
 .btn-primary:hover {
     color: #fff;
     background-color: #063D67;
     border-color: #13629E;
+    text-align: center;
 }
-
 
 .bd-placeholder-img {
     font-size: 1.125rem;
