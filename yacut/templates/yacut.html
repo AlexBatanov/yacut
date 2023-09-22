@@ -54,7 +54,7 @@
             {% if link %}
               <h5 class="text-center">
                 Ваша ссылка готова:
-                <a href="{{ short_link }}">{{ short_link }}</a>
+                <a href="{{ url_for('redirect_view', short_link=short_link, _external=True) }}">{{ short_link }}</a>
               </h5>
             {% endif %}
             </p>

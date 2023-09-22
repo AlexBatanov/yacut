@@ -9,3 +9,12 @@ class URLMap(db.Model):
     short = db.Column(db.String(16), unique=True, nullable=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
+    def to_dict(self):
+        return dict(
+            url=self.original,
+            short_link=self.short
+        )
+    
+    def from_dict(self, dict):
+        self.original = dict.get('url')
+        self.short = dict.get('custom_id')

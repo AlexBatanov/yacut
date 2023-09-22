@@ -1,4 +1,5 @@
 import random
+import re
 
 from .constants import CHARACTERS, MAX_LEN_LINK, NUM_URL_PARTS
 from .models import URLMap
@@ -30,3 +31,7 @@ def save_url_to_database(original:str, short:str) -> None:
     )
     db.session.add(url)
     db.session.commit()
+
+def is_english_alphanumeric(input_string):
+    pattern = r'^[a-zA-Z0-9]+$'
+    return bool(re.match(pattern, input_string))
