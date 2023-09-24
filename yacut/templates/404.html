@@ -1,0 +1,32 @@
+{% extends "base.html" %} 
+{% block title %}YaCut - ссылка не неадйена{%endblock %} 
+{% block content %}
+<main>
+    <head><link rel="stylesheet" href="{{ url_for('static', filename='css/minigame.css') }}"</head>
+    <section class="container my-5 px-4">
+        <h1 class="text-center"><span style="color:red">Ya</span>Cut</h1>
+        <p class="text-center my-4">
+        Ссылка не найдена
+        </p>
+    </section>
+    <body>
+        <p>Угадай число от 1 до 10:</p>
+        <input type="number" id="guessInput">
+        <button onclick="checkGuess()">Проверить</button>
+        <p id="result"></p>
+    
+        <script>
+            function checkGuess() {
+                var guess = parseInt(document.getElementById("guessInput").value);
+                var randomNumber = Math.floor(Math.random() * 10) + 1;
+    
+                if (guess === randomNumber) {
+                    document.getElementById("result").innerHTML = "Поздравляю, вы угадали число!";
+                } else {
+                    document.getElementById("result").innerHTML = "Увы, это не правильное число. Попробуйте еще раз.";
+                }
+            }
+        </script>
+    </body>
+</main>
+{% endblock %}
