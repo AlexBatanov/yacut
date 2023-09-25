@@ -4,6 +4,7 @@ from wtforms.validators import DataRequired, Length, Optional
 
 from .constants import MAX_CUSTOM_ID, MIN_LEN_LINK
 
+
 class URLMapForm(FlaskForm):
     original_link = StringField(
         'Длинная ссылка',
