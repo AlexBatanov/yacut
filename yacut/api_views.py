@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 from flask import jsonify, redirect, request, url_for
 
-from .helper import save_url_to_database, validator_api
+from .helpers import chek_and_get_custom_id, chek_and_get_unique, save_url_to_database, validator_api
 from . import app
 from .models import URLMap
 from .error_handlers import InvalidAPIUsage
@@ -24,11 +24,12 @@ def add_url():
     """Добавляет новый URL в базу данных и возвращает короткую ссылку."""
     data = request.get_json()
     validator_api(data)
-    save_url_to_database(data['url'], data['custom_id'])
+    custom_id = chek_and_get_custom_id(data.get('custom_id'))
+    save_url_to_database(data['url'], custom_id)
     return jsonify(
         {
             'short_link': url_for(
-                'redirect_url', short_link=data['custom_id'], _external=True
+                'redirect_url', short_link=custom_id, _external=True
             ),
             'url': data['url']
         }
@@ -40,5 +41,4 @@ def redirect_url(short_link):
     """
     Перенаправляет пользователя на оригинальный URL по короткой ссылке.
     """
-    url = URLMap.query.filter_by(short=short_link).first()
-    return redirect(url.original)
+    return redirect(chek_and_get_unique(short_link).original)

@@ -10,12 +10,14 @@ from .constants import (CHARACTERS, DATA_NOT, MAX_LEN_LINK,
                         REQUERED_URL_FIELD, name_is_ocuppet)
 
 
-def create_custom_link() -> str:
-    """Генерирует сокращение для ссылки"""
-    custom_link = ''.join(random.sample(CHARACTERS, MAX_LEN_LINK))
-    while URLMap.query.filter_by(short=custom_link).first():
-        custom_link = create_custom_link()
-    return custom_link
+def create_custom_link(castom_id) -> str:
+    """Генерирует сокращение для ссылки если кстомная ссылка пустая"""
+    if castom_id:
+        return castom_id
+    custom_id = ''.join(random.sample(CHARACTERS, MAX_LEN_LINK))
+    while chek_and_get_unique(custom_id):
+        custom_id = create_custom_link()
+    return custom_id
 
 
 def create_short_link(link: str, custom_link: str) -> str:
@@ -23,7 +25,7 @@ def create_short_link(link: str, custom_link: str) -> str:
     Cоздает сокращенную ссылку на основе оригинальной ссылки
     и пользовательского сокращения
     """
-    cut_link = '/'.join(link.split("/")[:NUM_URL_PARTS])
+    cut_link = '/'.join(link.split('/')[:NUM_URL_PARTS])
     return f'{cut_link}/{custom_link}'
 
 
@@ -47,17 +49,26 @@ def is_english_alphanumeric(input_string: str):
 
 def validator_api(data: dict):
     """
-    Проверяет данные запроса API на валидность и вносит необходимые изменения.
+    Проверяет данные запроса API на валидность.
     """
     if not data:
         raise InvalidAPIUsage(DATA_NOT)
-    custom_id = data.get('custom_id')
     if 'url' not in data:
         raise InvalidAPIUsage(REQUERED_URL_FIELD)
-    if not custom_id:
-        custom_id = create_custom_link()
-    elif URLMap.query.filter_by(short=custom_id).first():
+
+
+def chek_and_get_custom_id(custom_id) -> str:
+    """
+    Проверяет кстомную ссылку на валидность и возывращает ее
+    """
+    custom_id = create_custom_link(custom_id)
+    if chek_and_get_unique(custom_id):
         raise InvalidAPIUsage(name_is_ocuppet(custom_id, api=True))
     if len(custom_id) > 16 or not is_english_alphanumeric(custom_id):
         raise InvalidAPIUsage(NOT_CORRECT_NAME_LINK)
-    data['custom_id'] = custom_id
+    return custom_id
+
+
+def chek_and_get_unique(custom_id) -> str|None:
+    """Проверяет наличие кстомной ссылки в бд и возвращает при ее наличии"""
+    return URLMap.query.filter_by(short=custom_id).first()
