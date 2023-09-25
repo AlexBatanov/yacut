@@ -69,6 +69,6 @@ def chek_and_get_custom_id(custom_id) -> str:
     return custom_id
 
 
-def chek_and_get_unique(custom_id) -> str | None:
+def chek_and_get_unique(custom_id):
     """Проверяет наличие кстомной ссылки в бд и возвращает при ее наличии"""
     return URLMap.query.filter_by(short=custom_id).first()
