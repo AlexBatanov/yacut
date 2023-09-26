@@ -2,10 +2,12 @@ from http import HTTPStatus
 
 from flask import flash, redirect, render_template
 
+from .error_handlers import InvalidAPIUsage
+from .validators import validator_custom_id
 from . import app
 from .forms import URLMapForm
 from .models import URLMap
-from .helpers import chek_and_get_unique, create_custom_link, save_url_to_database
+from .services import generate_custom_id, save_url_to_database
 from .constants import name_is_ocuppet
 
 
@@ -18,9 +20,12 @@ def get_add_link():
     form = URLMapForm()
     if not form.validate_on_submit():
         return render_template('yacut.html', form=form)
-
-    custom_id = create_custom_link(form.custom_id.data)
-    if chek_and_get_unique(custom_id):
+    custom_id = form.custom_id.data
+    if not custom_id:
+        custom_id = generate_custom_id()
+    try:
+        validator_custom_id(custom_id)
+    except InvalidAPIUsage:
         flash(name_is_ocuppet(custom_id))
         return render_template('yacut.html', form=form)
 
