@@ -4,7 +4,7 @@ from flask import jsonify, render_template
 
 from . import app
 
-app.logger.info('errors')
+
 class InvalidAPIUsage(Exception):
     status_code = HTTPStatus.BAD_REQUEST
 

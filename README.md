@@ -59,7 +59,7 @@ SECRET_KEY=YOUR_SECRET_KEY
 * Если у вас windows
 
     ```
-    set FLASK_APP=theapp
+    set FLASK_APP=yacut
     ```
 ```
 Запуск проекта

@@ -1,11 +1,10 @@
 import random
 
-from . import app
 from .validators import validator_custom_id
-app.logger.info('servivs')
 from .models import URLMap
 from . import db
 from .constants import CHARACTERS, MAX_LEN_LINK
+
 
 def generate_custom_id() -> str:
     """Генерирует сокращение для ссылки"""
@@ -13,15 +12,6 @@ def generate_custom_id() -> str:
     while get_custom_id(custom_id):
         custom_id = generate_custom_id()
     return custom_id
-
-
-# def create_short_link(link: str, custom_link: str) -> str:
-#     """
-#     Cоздает сокращенную ссылку на основе оригинальной ссылки
-#     и пользовательского сокращения
-#     """
-#     cut_link = '/'.join(link.split('/')[:NUM_URL_PARTS])
-#     return f'{cut_link}/{custom_link}'
 
 
 def save_url_to_database(original: str, short: str) -> None:
@@ -36,12 +26,14 @@ def save_url_to_database(original: str, short: str) -> None:
 
 def chek_and_get_custom_id(data) -> str:
     """
-    Проверяет кастомную ссылку на валидность при отсутсвие генерируется
+    Проверяет кастомную ссылку на валидность при отсутсвие генерируется,
+    и сохраняет в бд
     """
     custom_id = data.get('custom_id')
     if not custom_id:
-        return generate_custom_id()
+        custom_id = generate_custom_id()
     validator_custom_id(custom_id)
+    save_url_to_database(data.get('url'), custom_id)
     return custom_id
 
 

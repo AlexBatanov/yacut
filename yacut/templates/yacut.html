@@ -17,24 +17,18 @@
               {{ form.csrf_token }}
               {{ form.original_link(class="form-control form-control-lg py-2 mb-3", placeholder=form.original_link.label.text) }}
               <p>
-                {% if form.original_link.errors %}
-                  {% for error in form.original_link.errors %}
-                    <span style="color: red">{{ error }}</span>
-                  {% endfor %}
-                {% endif %}
+                {% for error in form.original_link.errors %}
+                  <span style="color: red">{{ error }}</span>
+                {% endfor %}
               </p>
               <p></p>
               {{ form.custom_id(class="form-control form-control-lg py-2 mb-3", placeholder=form.custom_id.label.text)}}
               <p>
-                {% if form.custom_id .errors %}
-                  {% for error in form.custom_id .errors %}
-                    <span style="color: red">{{ error }}</span>
-                  {% endfor %}
-                {% endif %}
+                {% for error in form.custom_id.errors %}
+                  <span style="color: red">{{ error }}</span>
+                {% endfor %}
                 {% with messages = get_flashed_messages() %}
-                  {% if messages %}
-                    <span style="color: red">{{ messages[0] }}</span>
-                  {% endif %}
+                  <span style="color: red">{{ messages[0] }}</span>
                 {% endwith %}
               </p>
               {{ form.submit(class="btn btn-primary") }}

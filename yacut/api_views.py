@@ -3,7 +3,7 @@ from http import HTTPStatus
 from flask import jsonify, redirect, request, url_for
 
 from .validators import url_validator_in_data
-from .services import chek_and_get_custom_id, get_custom_id, save_url_to_database
+from .services import chek_and_get_custom_id, get_custom_id
 from . import app
 from .error_handlers import InvalidAPIUsage
 
@@ -25,7 +25,6 @@ def add_url():
     data = request.get_json()
     url_validator_in_data(data)
     custom_id = chek_and_get_custom_id(data)
-    save_url_to_database(data['url'], custom_id)
     return jsonify(
         {
             'short_link': url_for(

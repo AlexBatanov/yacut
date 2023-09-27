@@ -7,6 +7,7 @@ CHARACTERS = list(
 )
 MAX_LEN_LINK = 6
 NUM_URL_PARTS = 3
+PATTERN = r'^[a-zA-Z0-9]+$'
 
 # forms validates
 MAX_CUSTOM_ID = 16

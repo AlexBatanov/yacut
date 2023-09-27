@@ -23,3 +23,9 @@ class URLMapForm(FlaskForm):
     )
 
     submit = SubmitField('Создать')
+
+    def to_dict(self):
+        return {
+            'url': self.original_link.data,
+            'custom_id': self.custom_id.data
+        }
