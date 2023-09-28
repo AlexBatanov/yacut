@@ -1,9 +1,10 @@
 import re
 
-from .models import URLMap
-from .error_handlers import InvalidAPIUsage
+from .helpers import get_custom_id
+from .error_handlers import InvalidAPIUsage, NotUniqueCustomId
 from .constants import (DATA_NOT, MAX_CUSTOM_ID, NOT_CORRECT_NAME_LINK,
-                        REQUERED_URL_FIELD, PATTERN, name_is_ocuppet)
+                        NOT_UNICUE_CUSTOM_ID, NOT_UNICUE_CUSTOM_ID_API,
+                        REQUERED_URL_FIELD, PATTERN)
 
 
 def url_validator_in_data(data: dict):
@@ -23,12 +24,20 @@ def is_english_alphanumeric(input_string: str):
     return bool(re.match(PATTERN, input_string))
 
 
-def validator_custom_id(custom_id):
+def validator_custom_id_api(custom_id):
     """
-    Проверяет, кастомную ссылку на валидность.
+    Проверяет, кастомную ссылку в апи на валидность.
     """
-    if URLMap.query.filter_by(short=custom_id).first():
-        raise InvalidAPIUsage(name_is_ocuppet(custom_id, api=True))
+    if get_custom_id(custom_id):
+        raise InvalidAPIUsage(NOT_UNICUE_CUSTOM_ID_API.format(custom_id))
     if (len(custom_id) > MAX_CUSTOM_ID or
             not is_english_alphanumeric(custom_id)):
         raise InvalidAPIUsage(NOT_CORRECT_NAME_LINK)
+
+
+def validator_custom_id_views(custom_id):
+    """
+    Проверяет, кастомную ссылку в представлении на валидность.
+    """
+    if get_custom_id(custom_id):
+        raise NotUniqueCustomId(NOT_UNICUE_CUSTOM_ID.format(custom_id))

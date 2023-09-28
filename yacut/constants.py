@@ -17,9 +17,5 @@ MIN_LEN_LINK = 1
 NOT_CORRECT_NAME_LINK = 'Указано недопустимое имя для короткой ссылки'
 REQUERED_URL_FIELD = '"url" является обязательным полем!'
 DATA_NOT = 'Отсутствует тело запроса'
-
-
-def name_is_ocuppet(custom_id, api=False):
-    if api:
-        return f'Имя "{custom_id}" уже занято.'
-    return f'Имя {custom_id} уже занято!'
+NOT_UNICUE_CUSTOM_ID = 'Имя {0} уже занято!'
+NOT_UNICUE_CUSTOM_ID_API = 'Имя "{0}" уже занято.'

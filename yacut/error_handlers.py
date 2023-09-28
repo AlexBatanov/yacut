@@ -5,6 +5,14 @@ from flask import jsonify, render_template
 from . import app
 
 
+class NotUniqueCustomId(Exception):
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        return self.message
+
+
 class InvalidAPIUsage(Exception):
     status_code = HTTPStatus.BAD_REQUEST
 
