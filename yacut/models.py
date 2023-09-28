@@ -12,3 +12,7 @@ class URLMap(db.Model):
     def from_dict(self, dict):
         self.original = dict.get('url')
         self.short = dict.get('custom_id')
+
+    @classmethod
+    def is_exists(cls, custom_id):
+        return cls.query.filter_by(short=custom_id).first()

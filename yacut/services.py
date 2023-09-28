@@ -1,16 +1,15 @@
 import random
 
 from .validators import validator_custom_id_api, validator_custom_id_views
-from .models import URLMap
 from . import db
 from .constants import CHARACTERS, MAX_LEN_LINK
-from .helpers import get_custom_id
+from .models import URLMap
 
 
 def generate_custom_id() -> str:
     """Генерирует сокращение для ссылки"""
     custom_id = ''.join(random.sample(CHARACTERS, MAX_LEN_LINK))
-    while get_custom_id(custom_id):
+    while URLMap.is_exists(custom_id):
         custom_id = generate_custom_id()
     return custom_id
 

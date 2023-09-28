@@ -3,15 +3,16 @@ from http import HTTPStatus
 from flask import jsonify, redirect, request, url_for
 
 from .validators import url_validator_in_data
-from .services import chek_and_get_custom_id, get_custom_id
+from .services import chek_and_get_custom_id
 from . import app
 from .error_handlers import InvalidAPIUsage
+from .models import URLMap
 
 
 @app.route('/api/id/<string:short_id>/', methods=['GET'])
 def get_url(short_id):
     """Получает длинный URL по короткому идентификатору."""
-    url = get_custom_id(short_id)
+    url = URLMap.is_exists(short_id)
     if not url:
         raise InvalidAPIUsage(
             'Указанный id не найден', status_code=HTTPStatus.NOT_FOUND
@@ -40,4 +41,4 @@ def redirect_url(short_link):
     """
     Перенаправляет пользователя на оригинальный URL по короткой ссылке.
     """
-    return redirect(get_custom_id(short_link).original)
+    return redirect(URLMap.is_exists(short_link).original)
